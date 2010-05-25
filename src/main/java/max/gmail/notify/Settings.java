@@ -12,8 +12,7 @@ public final class Settings {
     private String user = "maxim.dybarskyy@gmail.com";
     private String pass = "maximillian";
     private String folderName = "madrid";
-//    private int delay = 1000 * 60 * 5; // 5 minutes
-    private int delay = 1000 * 20;
+    private int delay = 1000 * 60 * 5; // 5 minutes
 
     private Settings() {
     }

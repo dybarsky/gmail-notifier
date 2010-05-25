@@ -18,17 +18,5 @@ public class Installer extends ModuleInstall {
                 Notifier.start();
             }
         });
-
-        new Thread() {
-            public void run() {
-                Settings set = Settings.getSettigs();
-                while (true) {
-                    System.out.println(set.toString());
-                    try {
-                        this.sleep(1000);
-                    } catch (Exception ex) {}
-                }
-            }
-        }.start();
     }
 }

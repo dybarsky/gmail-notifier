@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+OpenIDE-Module-Install: max/gmail/notify/Installer.class
+OpenIDE-Module-Localizing-Bundle: max/gmail/notify/Bundle.properties
+OpenIDE-Module-Layer: max/gmail/notify/layer.xml
