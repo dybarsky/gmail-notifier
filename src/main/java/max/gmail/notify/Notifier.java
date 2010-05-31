@@ -19,11 +19,7 @@ public class Notifier implements Runnable {
     private Icon icon = ImageUtilities.loadImageIcon("max/gmail/notify/burn.png", false);
     private Settings settings = Settings.getSettigs();
     private int previousCount = 0;
-    MailChecker mc = null;
-
-    public Notifier() {
-        connect();
-    }
+    private MailChecker mc = null;
 
     private void connect() {
         try {
@@ -35,7 +31,9 @@ public class Notifier implements Runnable {
         }
     }
 
+    @Override
     public void run() {
+        connect();
         while (true) {
             try {
                 if (mc == null) {
