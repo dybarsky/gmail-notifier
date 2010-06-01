@@ -33,8 +33,4 @@ public class MailChecker {
         else
             return folder.getUnreadMessageCount();
     }
-
-    public String getSubject() throws MessagingException {
-        return "";
-    }
 }
