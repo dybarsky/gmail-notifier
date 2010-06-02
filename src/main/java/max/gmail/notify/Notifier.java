@@ -25,14 +25,8 @@ public class Notifier extends TimerTask {
     private static Timer timer = new Timer(true);
     private static Settings settings = Settings.load();
 
-    private void connect() {
-        try {
-            mc = new MailChecker();
-        } catch (NoSuchProviderException ex) {
-            Exceptions.attachMessage(ex, loc("mail.no_provider"));
-        } catch (MessagingException ex) {
-            Exceptions.attachMessage(ex, loc("mail.error"));
-        }
+    private void connect() throws MessagingException {
+        mc = new MailChecker();
     }
 
     @Override
@@ -48,10 +42,6 @@ public class Notifier extends TimerTask {
             }
         } catch (MessagingException ex) {
             Exceptions.attachMessage(ex, loc("mail.error"));
-        } finally {
-            if (mc == null) {
-                connect();
-            }
         }
     }
 
@@ -66,6 +56,8 @@ public class Notifier extends TimerTask {
     }
 
     public static void start() {
+        if (settings == null)
+            return;
         timer = new Timer(true);
         timer.schedule(new Notifier(), 10000, settings.getDelay());
     }

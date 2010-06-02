@@ -5,6 +5,7 @@
  */
 package max.gmail.notify.settings;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -13,10 +14,10 @@ import java.io.Serializable;
 
 public final class Settings implements Serializable {
 
-    private String user = "maxim.dybarskyy@gmail.com";
-    private String pass = "maximillian";
-    private String folderName = "madrid";
-    private int delay = 1000 * 60 * 5; // 5 minutes
+    private String user;
+    private String pass;
+    private String folderName;
+    private int delay;
 
     public Settings() {
     }
@@ -99,12 +100,12 @@ public final class Settings implements Serializable {
     }
 
     public static Settings load() {
-        String fileName = System.getProperty("user.home") + "/.netbeans/gmail.cfg";
+        File file = new File(System.getProperty("user.home") + "/.gmail.cfg");
         Settings res = null;
         FileInputStream fin = null;
         byte[] arr = new byte[1024];
         try {
-            fin = new FileInputStream(fileName);
+            fin = new FileInputStream(file);
             fin.read(arr);
             res = (Settings) Serializer.deSerializeFromByteArray(arr);
         } catch (FileNotFoundException ex) {
@@ -126,10 +127,10 @@ public final class Settings implements Serializable {
     }
 
     public static boolean save(Settings set) {
-        String fileName = System.getProperty("user.home") + "/.netbeans/gmail.cfg";
+        File file = new File(System.getProperty("user.home") + "/.gmail.cfg");
         FileOutputStream fout = null;
         try {
-            fout = new FileOutputStream(fileName);
+            fout = new FileOutputStream(file);
             fout.write(Serializer.serializeToByteArray(set));
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
