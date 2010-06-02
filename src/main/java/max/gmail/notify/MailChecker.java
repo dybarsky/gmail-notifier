@@ -5,6 +5,7 @@
  */
 package max.gmail.notify;
 
+import max.gmail.notify.settings.Settings;
 import java.util.Properties;
 import javax.mail.Folder;
 import javax.mail.MessagingException;
@@ -16,7 +17,7 @@ public class MailChecker {
 
     private Store store;
     private Folder folder;
-    private Settings settings = Settings.getSettigs();
+    private Settings settings = Settings.load();
 
     public MailChecker() throws NoSuchProviderException, MessagingException {
         Properties props = System.getProperties();

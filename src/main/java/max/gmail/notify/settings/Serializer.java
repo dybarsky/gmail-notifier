@@ -1,0 +1,65 @@
+/**
+ * author: Maxim Dybarskiy
+ * date:   02.06.2010
+ * time:   11:17:15
+ */
+package max.gmail.notify.settings;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+class Serializer {
+
+    public static Object deSerializeFromByteArray(byte[] bytes) throws IOException, ClassNotFoundException {
+        ByteArrayInputStream bytestream = null;
+        ObjectInputStream objectInputStream = null;
+        Object objectFromNet;
+        try {
+            bytestream = new ByteArrayInputStream(bytes);    //  this is the bottleneck
+            objectInputStream = new ObjectInputStream(bytestream); // this is the bottleneck
+            objectFromNet = objectInputStream.readObject();
+            return objectFromNet;
+        } finally {
+            try {
+                if (bytestream != null) {
+                    bytestream.close();
+                }
+                if (objectInputStream != null) {
+                    objectInputStream.close();
+                }
+            } catch (IOException e) {
+                System.out.println(e);
+            }
+
+        }
+    }
+
+    public static byte[] serializeToByteArray(Object obj) throws Exception {
+        byte[] bytes;
+        ByteArrayOutputStream bytestream = null;
+        ObjectOutputStream objstream = null;
+        try {
+            bytestream = new ByteArrayOutputStream();
+            objstream = new ObjectOutputStream(bytestream);
+            objstream.writeObject(obj);
+            objstream.flush();
+            objstream.reset();
+            bytes = bytestream.toByteArray();
+            return bytes;
+        } finally {
+            try {
+                if (bytestream != null) {
+                    bytestream.close();
+                }
+                if (objstream != null) {
+                    objstream.close();
+                }
+            } catch (IOException e) {
+                System.out.println(e);
+            }
+        }
+    }
+}

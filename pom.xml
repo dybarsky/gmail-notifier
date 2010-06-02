@@ -60,6 +60,12 @@
             <artifactId>org-jdesktop-layout</artifactId>
             <version>RELEASE68</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.4</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -97,6 +103,7 @@
     </build>
     <description>Gmail notifier. Notify by popup tooltips like update notification</description>
 </project>
+
 
 
 

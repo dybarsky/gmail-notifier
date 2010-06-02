@@ -5,7 +5,10 @@
  */
 package max.gmail.notify;
 
+import max.gmail.notify.settings.Settings;
 import java.awt.event.ActionListener;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
 import javax.swing.Icon;
@@ -14,12 +17,13 @@ import org.openide.util.Exceptions;
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
 
-public class Notifier implements Runnable {
+public class Notifier extends TimerTask {
 
     private Icon icon = ImageUtilities.loadImageIcon("max/gmail/notify/burn.png", false);
-    private Settings settings = Settings.getSettigs();
     private int previousCount = 0;
     private MailChecker mc = null;
+    private static Timer timer = new Timer(true);
+    private static Settings settings = Settings.load();
 
     private void connect() {
         try {
@@ -33,30 +37,20 @@ public class Notifier implements Runnable {
 
     @Override
     public void run() {
-        connect();
-        while (true) {
-            try {
-                if (mc == null) {
-                    throw new IllegalStateException("mailchecker == null");
-                }
-                int count = mc.getUnreadMessageCount();
-                if (count > 0 && count != previousCount) {
-                    notify(loc("mail.update"), null, null);
-                    previousCount = count;
-                }
-                Thread.sleep(settings.getDelay());
-            } catch (MessagingException ex) {
-                Exceptions.attachMessage(ex, loc("mail.error"));
-            } catch (InterruptedException ex) {
-                Thread.currentThread().interrupt();
-                this.start();
-            } catch (IllegalStateException ex) {
-                Exceptions.attachMessage(ex, loc("mail.error"));
+        try {
+            if (mc == null) {
+                connect();
             }
-            finally {
-                if (mc == null) {
-                    connect();
-                }
+            int count = mc.getUnreadMessageCount();
+            if (count > 0 && count != previousCount) {
+                notify(loc("mail.update"), null, null);
+                previousCount = count;
+            }
+        } catch (MessagingException ex) {
+            Exceptions.attachMessage(ex, loc("mail.error"));
+        } finally {
+            if (mc == null) {
+                connect();
             }
         }
     }
@@ -72,7 +66,13 @@ public class Notifier implements Runnable {
     }
 
     public static void start() {
-        new Thread(new Notifier()).start();
+        timer = new Timer(true);
+        timer.schedule(new Notifier(), 10000, settings.getDelay());
+    }
+
+    public static void stop() {
+        timer.cancel();
+        timer = null;
     }
 
     private static String loc(String key) {
