@@ -5,6 +5,7 @@
 
 package max.gmail.notify.options;
 
+import max.gmail.notify.Notifier;
 import max.gmail.notify.settings.Settings;
 
 final class GmailOptionsPanel extends javax.swing.JPanel {
@@ -106,6 +107,7 @@ final class GmailOptionsPanel extends javax.swing.JPanel {
     
     void load() {
         Settings set = Settings.load();
+
         jTextField1.setText(set.getUser());
         jPasswordField1.setText(set.getPass());
         jTextField3.setText(set.getFolderName());
@@ -116,7 +118,13 @@ final class GmailOptionsPanel extends javax.swing.JPanel {
         set.setUser(jTextField1.getText());
         set.setPass(new String(jPasswordField1.getPassword()));
         set.setFolderName(jTextField3.getText());
+
+        set.setDelay(5000);
+        
         Settings.save(set);
+
+        Notifier.stop();
+        Notifier.start();
     }
 
     boolean valid() {        

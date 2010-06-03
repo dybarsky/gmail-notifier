@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.mail.MessagingException;
-import javax.mail.NoSuchProviderException;
 import javax.swing.Icon;
 import org.openide.awt.NotificationDisplayer;
 import org.openide.util.Exceptions;
@@ -23,7 +22,6 @@ public class Notifier extends TimerTask {
     private int previousCount = 0;
     private MailChecker mc = null;
     private static Timer timer = new Timer(true);
-    private static Settings settings = Settings.load();
 
     private void connect() throws MessagingException {
         mc = new MailChecker();
@@ -31,6 +29,7 @@ public class Notifier extends TimerTask {
 
     @Override
     public void run() {
+        System.out.println("N  " + Settings.load().toString());
         try {
             if (mc == null) {
                 connect();
@@ -42,6 +41,7 @@ public class Notifier extends TimerTask {
             }
         } catch (MessagingException ex) {
             Exceptions.attachMessage(ex, loc("mail.error"));
+            ex.printStackTrace();
         }
     }
 
@@ -56,14 +56,16 @@ public class Notifier extends TimerTask {
     }
 
     public static void start() {
-        if (settings == null)
+        Settings s = Settings.load();
+        if (s == null)
             return;
         timer = new Timer(true);
-        timer.schedule(new Notifier(), 10000, settings.getDelay());
+        timer.schedule(new Notifier(), 10000, s.getDelay());
     }
 
     public static void stop() {
-        timer.cancel();
+        if (timer != null)
+            timer.cancel();
         timer = null;
     }
 

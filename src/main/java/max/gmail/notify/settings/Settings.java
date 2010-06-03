@@ -99,7 +99,7 @@ public final class Settings implements Serializable {
                 + delay;
     }
 
-    public static Settings load() {
+    public static synchronized Settings load() {
         File file = new File(System.getProperty("user.home") + "/.gmail.cfg");
         Settings res = null;
         FileInputStream fin = null;
@@ -126,7 +126,7 @@ public final class Settings implements Serializable {
         return res;
     }
 
-    public static boolean save(Settings set) {
+    public static synchronized boolean save(Settings set) {
         File file = new File(System.getProperty("user.home") + "/.gmail.cfg");
         FileOutputStream fout = null;
         try {
