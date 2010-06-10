@@ -11,8 +11,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public final class Settings implements Serializable {
+
+    private static Logger log = Logger.getLogger("Gmail.Settings");
 
     private String user;
     private String pass;
@@ -109,18 +113,18 @@ public final class Settings implements Serializable {
             fin.read(arr);
             res = (Settings) Serializer.deSerializeFromByteArray(arr);
         } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
+            log.log(Level.WARNING, ex.getMessage());
         } catch (IOException ex) {
-            ex.printStackTrace();
+            log.log(Level.WARNING, ex.getMessage());
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.log(Level.WARNING, ex.getMessage());
         } finally {
             try {
                 if (fin != null) {
                     fin.close();
                 }
             } catch(IOException ex) {
-                
+                log.log(Level.WARNING, ex.getMessage());
             }
         }
         return res;
@@ -133,13 +137,13 @@ public final class Settings implements Serializable {
             fout = new FileOutputStream(file);
             fout.write(Serializer.serializeToByteArray(set));
         } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
+            log.log(Level.WARNING, ex.getMessage());
             return false;
         } catch (IOException ex) {
-            ex.printStackTrace();
+            log.log(Level.WARNING, ex.getMessage());
             return false;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.log(Level.WARNING, ex.getMessage());
             return false;
         }  finally {
             try {
@@ -147,7 +151,7 @@ public final class Settings implements Serializable {
                     fout.close();
                 }
             } catch(IOException ex) {
-
+                log.log(Level.WARNING, ex.getMessage());
             }
         }
         return true;

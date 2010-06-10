@@ -8,7 +8,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.text.NumberFormat;
-import javax.swing.JFrame;
 import javax.swing.JTextField;
 import max.gmail.notify.Notifier;
 import max.gmail.notify.settings.Settings;
@@ -21,15 +20,6 @@ final class GmailOptionsPanel extends javax.swing.JPanel {
         this.controller = controller;
         initComponents();
         initGui();
-    }
-
-    public static void main(String[] args) {
-        JFrame f = new JFrame();
-        f.setLocationByPlatform(true);
-        f.setSize(500, 300);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.getContentPane().add(new GmailOptionsPanel(null));
-        f.setVisible(true);
     }
 
     private void initGui() {

@@ -9,10 +9,11 @@ import max.gmail.notify.settings.Settings;
 import java.awt.event.ActionListener;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.mail.MessagingException;
 import javax.swing.Icon;
 import org.openide.awt.NotificationDisplayer;
-import org.openide.util.Exceptions;
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
 
@@ -23,13 +24,14 @@ public class Notifier extends TimerTask {
     private MailChecker mc = null;
     private static Timer timer = null;
 
+    private static Logger log = Logger.getLogger("Gmail.Notifier");
+
     private void connect() throws MessagingException {
         mc = new MailChecker();
     }
 
     @Override
     public void run() {
-        System.out.println("N  " + Settings.load().toString());
         try {
             if (mc == null) {
                 connect();
@@ -40,8 +42,7 @@ public class Notifier extends TimerTask {
                 previousCount = count;
             }
         } catch (MessagingException ex) {
-            Exceptions.attachMessage(ex, loc("mail.error"));
-            ex.printStackTrace();
+            log.log(Level.WARNING, ex.getMessage());
         }
     }
 

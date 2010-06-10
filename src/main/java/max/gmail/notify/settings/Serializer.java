@@ -10,8 +10,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 class Serializer {
+
+    private static Logger log = Logger.getLogger("Gmail.Serializer");
 
     public static Object deSerializeFromByteArray(byte[] bytes) throws IOException, ClassNotFoundException {
         ByteArrayInputStream bytestream = null;
@@ -31,7 +35,7 @@ class Serializer {
                     objectInputStream.close();
                 }
             } catch (IOException e) {
-                System.out.println(e);
+                log.log(Level.WARNING, e.getMessage());
             }
 
         }
@@ -58,7 +62,7 @@ class Serializer {
                     objstream.close();
                 }
             } catch (IOException e) {
-                System.out.println(e);
+                log.log(Level.WARNING, e.getMessage());
             }
         }
     }
