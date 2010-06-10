@@ -2,9 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package max.gmail.notify.options;
 
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.text.NumberFormat;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
 import max.gmail.notify.Notifier;
 import max.gmail.notify.settings.Settings;
 
@@ -15,6 +20,49 @@ final class GmailOptionsPanel extends javax.swing.JPanel {
     GmailOptionsPanel(GmailOptionsPanelController controller) {
         this.controller = controller;
         initComponents();
+        initGui();
+    }
+
+    public static void main(String[] args) {
+        JFrame f = new JFrame();
+        f.setLocationByPlatform(true);
+        f.setSize(500, 300);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.getContentPane().add(new GmailOptionsPanel(null));
+        f.setVisible(true);
+    }
+
+    private void initGui() {
+        jTextField2.setEditable(false);
+        jTextField2.getCaret().setVisible(false);
+        jTextField2.setBackground(jTextField1.getBackground());
+
+        jTextField2.addKeyListener(new NumberFormatter(jTextField2, NumberFormat.getInstance()));
+        jTextField2.addFocusListener(new FocusAdapter() {
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                jTextField2.getCaret().setVisible(true);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                jTextField2.getCaret().setVisible(false);
+            }
+        });
+        FocusListener focus = new FocusAdapter() {
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                JTextField f = (JTextField) e.getSource();
+                f.setSelectionStart(0);
+                f.setSelectionEnd(f.getText().length());
+            }
+        };
+        jTextField1.addFocusListener(focus);
+        jTextField2.addFocusListener(focus);
+        jTextField3.addFocusListener(focus);
+        jPasswordField1.addFocusListener(focus);
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -104,13 +152,27 @@ final class GmailOptionsPanel extends javax.swing.JPanel {
                 .addContainerGap(88, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-    
+
     void load() {
+
         Settings set = Settings.load();
 
-        jTextField1.setText(set.getUser());
-        jPasswordField1.setText(set.getPass());
-        jTextField3.setText(set.getFolderName());
+        if (set != null && set.getUser() != null) {
+            jTextField1.setText(set.getUser());
+        }
+        if (set != null && set.getPass() != null) {
+            jPasswordField1.setText(set.getPass());
+        }
+        if (set != null && set.getFolderName() != null) {
+            jTextField3.setText(set.getFolderName());
+        } else {
+            jTextField3.setText("inbox");
+        }
+        if (set != null) {
+            jTextField2.setText(String.valueOf(set.getDelay() / 1000 / 60));
+        } else {
+            jTextField2.setText("0");
+        }
     }
 
     void store() {
@@ -118,19 +180,17 @@ final class GmailOptionsPanel extends javax.swing.JPanel {
         set.setUser(jTextField1.getText());
         set.setPass(new String(jPasswordField1.getPassword()));
         set.setFolderName(jTextField3.getText());
+        set.setDelay(Integer.valueOf(jTextField2.getText()) * 60 * 1000);
 
-        set.setDelay(5000);
-        
         Settings.save(set);
 
         Notifier.stop();
         Notifier.start();
     }
 
-    boolean valid() {        
+    boolean valid() {
         return true;
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

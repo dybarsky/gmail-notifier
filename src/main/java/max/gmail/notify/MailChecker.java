@@ -20,7 +20,6 @@ public class MailChecker {
 
     public MailChecker() throws NoSuchProviderException, MessagingException {
         Settings settings = Settings.load();
-        System.out.println("MC " + settings.toString());
         Properties props = System.getProperties();
         props.setProperty("mail.store.protocol", "imaps");
         Session session = Session.getDefaultInstance(props, null);

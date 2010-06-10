@@ -21,7 +21,7 @@ public class Notifier extends TimerTask {
     private Icon icon = ImageUtilities.loadImageIcon("max/gmail/notify/burn.png", false);
     private int previousCount = 0;
     private MailChecker mc = null;
-    private static Timer timer = new Timer(true);
+    private static Timer timer = null;
 
     private void connect() throws MessagingException {
         mc = new MailChecker();
@@ -64,8 +64,10 @@ public class Notifier extends TimerTask {
     }
 
     public static void stop() {
-        if (timer != null)
+        if (timer != null) {
             timer.cancel();
+            timer.purge();
+        }
         timer = null;
     }
 
