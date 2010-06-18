@@ -33,10 +33,13 @@ public class Notifier extends TimerTask {
     @Override
     public void run() {
         try {
+            log.log(Level.INFO, "check mail");
             if (mc == null) {
                 connect();
             }
             int count = mc.getUnreadMessageCount();
+            log.log(Level.INFO, "current messages count = " + count);
+            log.log(Level.INFO, "previous messages count = " + previousCount);
             if (count > 0 && count != previousCount) {
                 notify(loc("mail.update_main"), getDetalied(), null);
             }

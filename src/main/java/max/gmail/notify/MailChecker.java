@@ -7,6 +7,8 @@ package max.gmail.notify;
 
 import max.gmail.notify.settings.Settings;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.mail.Folder;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
@@ -18,14 +20,23 @@ public class MailChecker {
     private Store store;
     private Folder folder;
 
+    private static Logger log = Logger.getLogger("Gmail.MailChecker");
+
     public MailChecker() throws NoSuchProviderException, MessagingException {
+        log.log(Level.INFO, "load settings");
         Settings settings = Settings.load();
+        log.log(Level.INFO, "load properties");
         Properties props = System.getProperties();
         props.setProperty("mail.store.protocol", "imaps");
+        log.log(Level.INFO, "get session");
         Session session = Session.getDefaultInstance(props, null);
+        log.log(Level.INFO, "get store");
         store = session.getStore("imaps");
+        log.log(Level.INFO, "connect");
         store.connect("imap.gmail.com", settings.getUser(), settings.getPass());
+        log.log(Level.INFO, "get folder");
         folder = store.getFolder(settings.getFolderName());
+        log.log(Level.INFO, "open folder");
         folder.open(Folder.READ_ONLY);
     }
 
