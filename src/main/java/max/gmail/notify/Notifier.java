@@ -39,8 +39,8 @@ public class Notifier extends TimerTask {
             int count = mc.getUnreadMessageCount();
             if (count > 0 && count != previousCount) {
                 notify(loc("mail.update_main"), getDetalied(), null);
-                previousCount = count;
             }
+            previousCount = count;
         } catch (MessagingException ex) {
             log.log(Level.WARNING, ex.getMessage());
         }
