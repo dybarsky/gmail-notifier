@@ -101,7 +101,7 @@
             </plugin>
         </plugins>
     </build>
-    <description>Gmail notifier. Notify by popup tooltips like update notification</description>
+    <description>Gmail notifier. Notify by popup tooltips like an update notification</description>
 </project>
 
 

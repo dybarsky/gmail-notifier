@@ -38,12 +38,18 @@ public class Notifier extends TimerTask {
             }
             int count = mc.getUnreadMessageCount();
             if (count > 0 && count != previousCount) {
-                notify(loc("mail.update"), null, null);
+                notify(loc("mail.update_main"), getDetalied(), null);
                 previousCount = count;
             }
         } catch (MessagingException ex) {
             log.log(Level.WARNING, ex.getMessage());
         }
+    }
+
+    private String getDetalied() throws MessagingException {
+        return mc.getSubject()[0] + " "
+                + mc.getSubject()[1] + " "
+                + mc.getSubject()[2];
     }
 
     private void notify(String message, String detalied, ActionListener listener) {

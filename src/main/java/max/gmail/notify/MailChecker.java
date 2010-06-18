@@ -26,6 +26,7 @@ public class MailChecker {
         store = session.getStore("imaps");
         store.connect("imap.gmail.com", settings.getUser(), settings.getPass());
         folder = store.getFolder(settings.getFolderName());
+        folder.open(Folder.READ_ONLY);
     }
 
     public int getUnreadMessageCount() throws MessagingException {
@@ -33,5 +34,14 @@ public class MailChecker {
             return -1;
         else
             return folder.getUnreadMessageCount();
+    }
+
+    public String[] getSubject() throws MessagingException {
+        if (folder == null)
+            return null;
+        else {
+            String subj = folder.getMessage(folder.getMessageCount()).getSubject();
+            return subj.substring(subj.indexOf(":/ ") + 3).split(" ");
+        }
     }
 }
