@@ -23,6 +23,7 @@ public class Notifier extends TimerTask {
     private int previousCount = 0;
     private MailChecker mc = null;
     private static Timer timer = null;
+    private boolean isReconnect = true;
 
     private static Logger log = Logger.getLogger("Gmail.Notifier");
 
@@ -34,8 +35,9 @@ public class Notifier extends TimerTask {
     public void run() {
         try {
             log.log(Level.INFO, "check mail");
-            if (mc == null) {
+            if (mc == null || !mc.isConnect() || isReconnect) {
                 connect();
+                isReconnect = false;
             }
             int count = mc.getUnreadMessageCount();
             log.log(Level.INFO, "current messages count = " + count);
@@ -46,6 +48,7 @@ public class Notifier extends TimerTask {
             previousCount = count;
         } catch (MessagingException ex) {
             log.log(Level.WARNING, ex.getMessage());
+            isReconnect = true;
         }
     }
 

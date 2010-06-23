@@ -55,4 +55,8 @@ public class MailChecker {
             return subj.substring(subj.indexOf(":/ ") + 3).split(" ");
         }
     }
+
+    public boolean isConnect() {
+        return store.isConnected() && folder.isOpen();
+    }
 }
