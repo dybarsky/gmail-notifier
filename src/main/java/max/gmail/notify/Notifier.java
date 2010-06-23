@@ -7,6 +7,8 @@ package max.gmail.notify;
 
 import max.gmail.notify.settings.Settings;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -23,32 +25,27 @@ public class Notifier extends TimerTask {
     private int previousCount = 0;
     private MailChecker mc = null;
     private static Timer timer = null;
-    private boolean isReconnect = true;
-
     private static Logger log = Logger.getLogger("Gmail.Notifier");
 
-    private void connect() throws MessagingException {
+    public Notifier() {
         mc = new MailChecker();
     }
 
     @Override
     public void run() {
         try {
-            log.log(Level.INFO, "check mail");
-            if (mc == null || !mc.isConnect() || isReconnect) {
-                connect();
-                isReconnect = false;
-            }
+            log("check mail");
+            mc.connect();
             int count = mc.getUnreadMessageCount();
-            log.log(Level.INFO, "current messages count = " + count);
-            log.log(Level.INFO, "previous messages count = " + previousCount);
+            log("current messages count = " + count);
+            log("previous messages count = " + previousCount);
             if (count > 0 && count != previousCount) {
                 notify(loc("mail.update_main"), getDetalied(), null);
             }
             previousCount = count;
+            mc.disconnect();
         } catch (MessagingException ex) {
             log.log(Level.WARNING, ex.getMessage());
-            isReconnect = true;
         }
     }
 
@@ -70,8 +67,9 @@ public class Notifier extends TimerTask {
 
     public static void start() {
         Settings s = Settings.load();
-        if (s == null)
+        if (s == null) {
             return;
+        }
         timer = new Timer(true);
         timer.schedule(new Notifier(), 10000, s.getDelay());
     }
@@ -86,5 +84,9 @@ public class Notifier extends TimerTask {
 
     private static String loc(String key) {
         return NbBundle.getMessage(Notifier.class, key);
+    }
+
+    private static void log(String msg) {
+        log.log(Level.INFO, "<" + DateFormat.getDateTimeInstance().format(new Date()) + ">  " + msg);
     }
 }

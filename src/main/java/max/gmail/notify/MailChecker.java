@@ -5,6 +5,8 @@
  */
 package max.gmail.notify;
 
+import java.text.DateFormat;
+import java.util.Date;
 import max.gmail.notify.settings.Settings;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -22,22 +24,28 @@ public class MailChecker {
 
     private static Logger log = Logger.getLogger("Gmail.MailChecker");
 
-    public MailChecker() throws NoSuchProviderException, MessagingException {
-        log.log(Level.INFO, "load settings");
+    public void connect() throws NoSuchProviderException, MessagingException {
+        log("load settings");
         Settings settings = Settings.load();
-        log.log(Level.INFO, "load properties");
+        log("load properties");
         Properties props = System.getProperties();
         props.setProperty("mail.store.protocol", "imaps");
-        log.log(Level.INFO, "get session");
+        log("get session");
         Session session = Session.getDefaultInstance(props, null);
-        log.log(Level.INFO, "get store");
+        log("get store");
         store = session.getStore("imaps");
-        log.log(Level.INFO, "connect");
+        log("connect");
         store.connect("imap.gmail.com", settings.getUser(), settings.getPass());
-        log.log(Level.INFO, "get folder");
+        log("get folder");
         folder = store.getFolder(settings.getFolderName());
-        log.log(Level.INFO, "open folder");
+        log("open folder");
         folder.open(Folder.READ_ONLY);
+    }
+    public void disconnect() throws NoSuchProviderException, MessagingException {
+        log("close folder");
+        folder.close(false);
+        log("close connection");
+        store.close();
     }
 
     public int getUnreadMessageCount() throws MessagingException {
@@ -56,7 +64,7 @@ public class MailChecker {
         }
     }
 
-    public boolean isConnect() {
-        return store.isConnected() && folder.isOpen();
+    private static void log(String msg) {
+        log.log(Level.INFO, "<" + DateFormat.getDateTimeInstance().format(new Date()) + ">  " + msg);
     }
 }

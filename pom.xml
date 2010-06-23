@@ -2,10 +2,10 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>max</groupId>
-    <artifactId>GmailNotifyMy</artifactId>
+    <artifactId>GmailNotifySvn</artifactId>
     <packaging>nbm</packaging>
-    <version>1.1</version>
-    <name>Gmail Notify - My</name>
+    <version>1.2</version>
+    <name>Gmail Notify - Svn</name>
     
     <repositories>
         <!-- this is a remote repository hosting the netbeans api artifacts.

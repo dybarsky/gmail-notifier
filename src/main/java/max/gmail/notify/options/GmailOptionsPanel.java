@@ -8,6 +8,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.text.NumberFormat;
+import java.util.Locale;
 import javax.swing.JTextField;
 import max.gmail.notify.Notifier;
 import max.gmail.notify.settings.Settings;
@@ -27,7 +28,7 @@ final class GmailOptionsPanel extends javax.swing.JPanel {
         jTextField2.getCaret().setVisible(false);
         jTextField2.setBackground(jTextField1.getBackground());
 
-        jTextField2.addKeyListener(new NumberFormatter(jTextField2, NumberFormat.getInstance()));
+        jTextField2.addKeyListener(new NumberFormatter(jTextField2, NumberFormat.getInstance(Locale.US)));
         jTextField2.addFocusListener(new FocusAdapter() {
 
             @Override
