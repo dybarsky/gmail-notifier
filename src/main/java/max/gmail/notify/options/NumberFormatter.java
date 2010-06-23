@@ -8,6 +8,7 @@ package max.gmail.notify.options;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import javax.swing.JTextField;
 
 public  class NumberFormatter extends KeyAdapter
@@ -92,5 +93,12 @@ public  class NumberFormatter extends KeyAdapter
     public void keyTyped( KeyEvent e )
     {
         field.getCaret().setVisible( true );
+    }
+
+    public Number getValue() {
+        try {
+            return format.parse(field.getText());
+        } catch (ParseException ex) {}
+        return null;
     }
 }

@@ -17,9 +17,12 @@ final class GmailOptionsPanel extends javax.swing.JPanel {
 
     private final GmailOptionsPanelController controller;
 
+    private NumberFormatter format;
+
     GmailOptionsPanel(GmailOptionsPanelController controller) {
         this.controller = controller;
         initComponents();
+        format = new NumberFormatter(jTextField2, NumberFormat.getInstance(Locale.US));
         initGui();
     }
 
@@ -28,7 +31,7 @@ final class GmailOptionsPanel extends javax.swing.JPanel {
         jTextField2.getCaret().setVisible(false);
         jTextField2.setBackground(jTextField1.getBackground());
 
-        jTextField2.addKeyListener(new NumberFormatter(jTextField2, NumberFormat.getInstance(Locale.US)));
+        jTextField2.addKeyListener(format);
         jTextField2.addFocusListener(new FocusAdapter() {
 
             @Override
@@ -160,7 +163,7 @@ final class GmailOptionsPanel extends javax.swing.JPanel {
             jTextField3.setText("inbox");
         }
         if (set != null) {
-            jTextField2.setText(String.valueOf(set.getDelay() / 1000 / 60));
+            jTextField2.setText(String.valueOf((double) set.getDelay() / 1000 / 60));
         } else {
             jTextField2.setText("0");
         }
@@ -171,7 +174,7 @@ final class GmailOptionsPanel extends javax.swing.JPanel {
         set.setUser(jTextField1.getText());
         set.setPass(new String(jPasswordField1.getPassword()));
         set.setFolderName(jTextField3.getText());
-        set.setDelay(Integer.valueOf(jTextField2.getText()) * 60 * 1000);
+        set.setDelay((int) (format.getValue().doubleValue() * 60 * 1000));
 
         Settings.save(set);
 
