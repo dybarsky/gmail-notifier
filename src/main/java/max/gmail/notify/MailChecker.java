@@ -30,6 +30,8 @@ public class MailChecker {
         log("load properties");
         Properties props = System.getProperties();
         props.setProperty("mail.store.protocol", "imaps");
+        props.setProperty("mail.imap.timeout", "10000");
+        props.setProperty("mail.imap.connectiontimeout", "10000");
         log("get session");
         Session session = Session.getDefaultInstance(props, null);
         log("get store");
