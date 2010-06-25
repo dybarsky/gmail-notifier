@@ -45,7 +45,7 @@ public class Notifier extends TimerTask {
             previousCount = count;
             mc.disconnect();
         } catch (MessagingException ex) {
-            log.log(Level.WARNING, ex.getMessage());
+            log( ex.getMessage());
         }
     }
 
