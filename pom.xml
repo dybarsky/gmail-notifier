@@ -4,7 +4,7 @@
     <groupId>max</groupId>
     <artifactId>GmailNotifySvn</artifactId>
     <packaging>nbm</packaging>
-    <version>1.2</version>
+    <version>1.3</version>
     <name>Gmail Notify - Svn</name>
     
     <repositories>
@@ -20,6 +20,11 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4</version>
+        </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-util</artifactId>
@@ -39,11 +44,6 @@
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-windows</artifactId>
             <version>RELEASE69</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-            <version>1.4</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
