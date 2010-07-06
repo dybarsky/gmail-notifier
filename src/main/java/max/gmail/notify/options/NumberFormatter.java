@@ -97,7 +97,11 @@ public  class NumberFormatter extends KeyAdapter
 
     public Number getValue() {
         try {
-            return format.parse(field.getText());
+            if (field.getText() == null || field.getText().equals("")) {
+                return new Integer(0);
+            } else {
+                return format.parse(field.getText());
+            }
         } catch (ParseException ex) {}
         return null;
     }
