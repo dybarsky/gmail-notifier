@@ -52,6 +52,13 @@ final class GmailOptionsPanel extends javax.swing.JPanel {
                 f.setSelectionStart(0);
                 f.setSelectionEnd(f.getText().length());
             }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                JTextField f = (JTextField) e.getSource();
+                f.setSelectionStart(0);
+                f.setSelectionEnd(0);
+            }
         };
         jTextField1.addFocusListener(focus);
         jTextField2.addFocusListener(focus);
