@@ -11,7 +11,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import javax.swing.JTextField;
 
-public  class NumberFormatter extends KeyAdapter
+class NumberFormatter extends KeyAdapter
 {
     private NumberFormat format;
     private JTextField field;

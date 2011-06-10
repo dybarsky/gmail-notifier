@@ -41,7 +41,7 @@ class Serializer {
         }
     }
 
-    public static byte[] serializeToByteArray(Object obj) throws Exception {
+    public static byte[] serializeToByteArray(Object obj) throws IOException {
         byte[] bytes;
         ByteArrayOutputStream bytestream = null;
         ObjectOutputStream objstream = null;

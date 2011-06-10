@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 public final class Settings implements Serializable {
 
-    private static Logger log = Logger.getLogger("Gmail.Settings");
+    private static transient Logger log = Logger.getLogger("Gmail.Settings");
 
     private String user;
     private String pass;
@@ -111,12 +111,12 @@ public final class Settings implements Serializable {
         try {
             fin = new FileInputStream(file);
             fin.read(arr);
-            res = (Settings) Serializer.deSerializeFromByteArray(arr);
+            res = (Settings) Serializer.deSerializeFromByteArray(Encryptor.decrypt(arr));
+        } catch (ClassNotFoundException ex) {
+            log.log(Level.WARNING, ex.getMessage());
         } catch (FileNotFoundException ex) {
             log.log(Level.WARNING, ex.getMessage());
         } catch (IOException ex) {
-            log.log(Level.WARNING, ex.getMessage());
-        } catch (Exception ex) {
             log.log(Level.WARNING, ex.getMessage());
         } finally {
             try {
@@ -133,16 +133,15 @@ public final class Settings implements Serializable {
     public static synchronized boolean save(Settings set) {
         File file = new File(System.getProperty("user.home") + "/.gmail.cfg");
         FileOutputStream fout = null;
+        byte[] arr = new byte[1024];
         try {
             fout = new FileOutputStream(file);
-            fout.write(Serializer.serializeToByteArray(set));
+            arr = Serializer.serializeToByteArray(set);
+            fout.write(Encryptor.encrypt(arr));
         } catch (FileNotFoundException ex) {
             log.log(Level.WARNING, ex.getMessage());
             return false;
         } catch (IOException ex) {
-            log.log(Level.WARNING, ex.getMessage());
-            return false;
-        } catch (Exception ex) {
             log.log(Level.WARNING, ex.getMessage());
             return false;
         }  finally {
