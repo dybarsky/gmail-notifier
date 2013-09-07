@@ -3,7 +3,7 @@
 <filesystem>
  <folder name="OptionsDialog">
         <folder name="Advanced">
-            <file name="max-gmail-notify-options-GmailAdvancedOption.instance"/>
+            <file name="d-max-gmail-netbeans-options-GmailAdvancedOption.instance"/>
         </folder>
     </folder>
 </filesystem>

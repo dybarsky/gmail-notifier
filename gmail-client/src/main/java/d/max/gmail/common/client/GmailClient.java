@@ -3,21 +3,19 @@
  * date:   21.05.2010
  * time:   17:51:29
  */
-package d.max.gmail.common;
+package d.max.gmail.common.client;
 
+import d.max.gmail.common.account.Settings;
+import max.gmail.notify.settings.Settings;
+
+import javax.mail.*;
 import java.text.DateFormat;
 import java.util.Date;
-import max.gmail.notify.settings.Settings;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.mail.Folder;
-import javax.mail.MessagingException;
-import javax.mail.NoSuchProviderException;
-import javax.mail.Session;
-import javax.mail.Store;
 
-public class MailChecker {
+public class GmailClient {
 
     private Store store;
     private Folder folder;

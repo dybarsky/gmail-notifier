@@ -6,7 +6,6 @@
     <artifactId>gmail-notify</artifactId>
     <packaging>pom</packaging>
     <version>2.0</version>
-    <name>Gmail Notify</name>
 
     <modules>
         <module>gmail-client</module>
@@ -22,14 +21,16 @@
             <version>4.10</version>
             <scope>test</scope>
         </dependency>
-        
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.9.5</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 
     <description>Gmail notifier. Notify by popup tooltips like an update notification</description>
-    <properties>
-        <netbeans.version>RELEASE70</netbeans.version>
-    </properties>
 </project>
 
 

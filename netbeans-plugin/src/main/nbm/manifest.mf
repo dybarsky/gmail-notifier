@@ -1,4 +1,4 @@
 Manifest-Version: 1.0
-OpenIDE-Module-Install: max/gmail/notify/Installer.class
-OpenIDE-Module-Localizing-Bundle: max/gmail/notify/Bundle.properties
-OpenIDE-Module-Layer: max/gmail/notify/layer.xml
+OpenIDE-Module-Install: d/max/gmail/netbeans/Installer.class
+OpenIDE-Module-Localizing-Bundle: d/max/gmail/netbeans/Bundle.properties
+OpenIDE-Module-Layer: d/max/gmail/netbeans/layer.xml

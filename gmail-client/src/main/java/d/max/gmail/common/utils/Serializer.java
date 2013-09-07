@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 class Serializer {
 
-    private static Logger log = Logger.getLogger("Gmail.Serializer");
+    private static Logger log = Logger.getLogger(Serializer.class.getSimpleName());
 
     public static Object deSerializeFromByteArray(byte[] bytes) throws IOException, ClassNotFoundException {
         ByteArrayInputStream bytestream = null;

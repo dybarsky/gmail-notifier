@@ -10,12 +10,13 @@ import java.awt.event.FocusListener;
 import java.text.NumberFormat;
 import java.util.Locale;
 import javax.swing.JTextField;
+import javax.swing.text.NumberFormatter;
 
 import d.max.gmail.netbeans.Notifier;
 import d.max.gmail.netbeans.NumberFormatter;
 import max.gmail.notify.settings.Settings;
 
-final class GmailOptionsPanel extends javax.swing.JPanel {
+public class GmailOptionsPanel extends javax.swing.JPanel {
     
     private NumberFormatter format;
     

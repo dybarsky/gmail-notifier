@@ -11,7 +11,12 @@
     </parent>
 
     <artifactId>netbeans-plugin</artifactId>
+    <packaging>nbm</packaging>
     <version>2.0</version>
+
+    <properties>
+        <netbeans.version>RELEASE731</netbeans.version>
+    </properties>
 
     <repositories>
         <repository>
@@ -75,7 +80,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.10.1</version>
                 <extensions>true</extensions>
                 <configuration>
                     <descriptor>src/main/nbm/module.xml</descriptor>
