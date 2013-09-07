@@ -1,8 +1,6 @@
 package d.max.gmail.common.account;
 
-import d.max.gmail.common.checker.Checker;
-import d.max.gmail.common.checker.CheckerListener;
-import d.max.gmail.common.checker.MessageInterpreter;
+import d.max.gmail.common.checker.*;
 import java.lang.reflect.Array;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -15,12 +13,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class AccountManager {
     
     private List<Account> accounts = new CopyOnWriteArrayList<Account>();
-    private CheckerListener<Array> listener;
-    private Checker<Array> checker; 
+    private CheckerListener<String[]> listener;
+    private Checker<String[]> checker; 
 
-    public AccountManager(CheckerListener<Array> listener) {
+    public AccountManager(CheckerListener<String[]> listener) {
         this.listener = listener;
-        this.checker = new Checker<Array>(createInterpreter());
+        this.checker = new Checker<String[]>(createFactory());
     }
     
     public void addAccount(Account account) {
@@ -33,7 +31,7 @@ public class AccountManager {
         checker.checkAccounts(listener, accounts.iterator());
     }
     
-    MessageInterpreter<Array> createInterpreter() {
-        return new MessageInterpreter.SimpleInterpreter<Array>();
+    CheckerFactory<String[]> createFactory() {
+        return new CheckerFactory<String[]>();
     }
 }
