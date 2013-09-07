@@ -11,18 +11,15 @@ import java.util.Iterator;
  */
 public class Checker<R> {
     
-    private CheckerStrategy strategy;
     private final MessageInterpreter<R> interpreter;
     
-
-    public Checker(CheckerStrategy strategy, MessageInterpreter<R> interpreter) {
-        this.strategy = strategy;
+    public Checker(MessageInterpreter<R> interpreter) {
         this.interpreter = interpreter;
     }
     
     public void checkAccounts(CheckerListener<R> listener, Iterator<Account> iterator) {
         while(iterator.hasNext()) {
-            strategy.executeCheckOperation(createCheckRunnable(listener, iterator.next()));
+//            strategy.executeCheckOperation(createCheckRunnable(listener, iterator.next()));
         }
     }
     
