@@ -1,112 +1,31 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>max</groupId>
-    <artifactId>GmailNotifySvn</artifactId>
-    <packaging>nbm</packaging>
-    <version>1.5</version>
-    <name>Gmail Notify SVN</name>
-    
-    <repositories>
-        <!-- this is a remote repository hosting the netbeans api artifacts.
-         the versions of the artifacts are netbeans IDE release based, eg. RELEASE65.
-         You might want to use your own repository. To create one, use the nbm:populate-repository goal.
-          -->
-        <repository>
-            <id>netbeans</id>
-            <name>repository hosting netbeans.org api artifacts</name>
-            <url>http://bits.netbeans.org/maven2</url>
-        </repository>
-    </repositories>
+
+    <groupId>d.max</groupId>
+    <artifactId>gmail-notify</artifactId>
+    <packaging>pom</packaging>
+    <version>2.0</version>
+    <name>Gmail Notify</name>
+
+    <modules>
+        <module>gmail-client</module>
+        <module>netbeans-plugin</module>
+        <module>idea-plugin</module>
+    </modules>
 
     <dependencies>
-        <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-            <version>1.4</version>
-        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.8.2</version>
+            <version>4.10</version>
             <scope>test</scope>
         </dependency>
         
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-openide-util</artifactId>
-            <version>${netbeans.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-openide-modules</artifactId>
-            <version>${netbeans.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-openide-awt</artifactId>
-            <version>${netbeans.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-openide-windows</artifactId>
-            <version>${netbeans.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-openide-options</artifactId>
-            <version>${netbeans.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-netbeans-modules-options-api</artifactId>
-            <version>${netbeans.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-jdesktop-layout</artifactId>
-            <version>${netbeans.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-openide-util-lookup</artifactId>
-            <version>${netbeans.version}</version>
-        </dependency>
+
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>nbm-maven-plugin</artifactId>
-                <version>3.1</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <descriptor>src/main/nbm/module.xml</descriptor>
-                </configuration>
-            </plugin>
 
-            <!-- netbeans modules in 5.5+ are 1.5 compatible -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0.2</version>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.2</version>
-                <configuration>
-                    <!-- to have the jar plugin pickup the nbm generated manifest -->
-                    <useDefaultManifestFile>true</useDefaultManifestFile>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
     <description>Gmail notifier. Notify by popup tooltips like an update notification</description>
     <properties>
         <netbeans.version>RELEASE70</netbeans.version>
