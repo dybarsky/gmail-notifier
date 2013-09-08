@@ -17,10 +17,10 @@ class Serializer {
 
     private static Logger log = Logger.getLogger(Serializer.class.getSimpleName());
 
-    public static Object deSerializeFromByteArray(byte[] bytes) throws IOException, ClassNotFoundException {
+    public static java.lang.Object deSerializeFromByteArray(byte[] bytes) throws IOException, ClassNotFoundException {
         ByteArrayInputStream bytestream = null;
         ObjectInputStream objectInputStream = null;
-        Object objectFromNet;
+        java.lang.Object objectFromNet;
         try {
             bytestream = new ByteArrayInputStream(bytes);    //  this is the bottleneck
             objectInputStream = new ObjectInputStream(bytestream); // this is the bottleneck

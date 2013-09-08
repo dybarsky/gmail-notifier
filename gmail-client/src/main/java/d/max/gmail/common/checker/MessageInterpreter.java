@@ -14,14 +14,14 @@ public interface MessageInterpreter<R> {
     
     
     
-    public static class SimpleInterpreter<Array> implements MessageInterpreter {
+    public static class SimpleInterpreter<Array> implements MessageInterpreter<String[]> {
 
         public String[] process(Iterator<Message> messages) {
             return null;
         }
     }
     
-    public static class BitbucketInterpreter<String> implements MessageInterpreter {
+    public static class BitbucketInterpreter<String> implements MessageInterpreter<String> {
 
         public String process(Iterator<Message> messages) {
             return null;

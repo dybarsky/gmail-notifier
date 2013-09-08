@@ -1,6 +1,5 @@
 package d.max.gmail.common.checker;
 
-import com.sun.xml.internal.bind.v2.model.core.PropertyInfo;
 import d.max.gmail.common.account.Account;
 import d.max.gmail.common.client.ConnectionSettings;
 import d.max.gmail.common.client.GmailClient;
@@ -42,7 +41,7 @@ public class CheckerFactory<R> {
     }
     
     public MessageInterpreter<R> createInterpreter() {
-        return new MessageInterpreter.SimpleInterpreter<Array>();
+        return new MessageInterpreter.SimpleInterpreter();
     }
     
     public Properties createSettings() {
