@@ -1,13 +1,11 @@
 package d.max.gmail.common.checker;
 
 import d.max.gmail.common.account.Account;
-import d.max.gmail.common.client.GmailClient;
 import java.util.Iterator;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import static d.max.gmail.common.utils.Object.*;
 import java.util.concurrent.TimeUnit;
-
+import static d.max.gmail.common.utils.Object.*;
 /**
  * @user: Maxim Dybarskiy | maxim.dybarskyy@gmail.com
  * @date: 9/7/13
@@ -19,7 +17,7 @@ public class Checker<R> {
     private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
     public Checker(CheckerFactory<R> factory) {
-        this.factory = factory;
+        this.factory = notNull(factory);
     }
     
     public void checkAccounts(CheckerListener<R> listener, Iterator<Account> iterator) {

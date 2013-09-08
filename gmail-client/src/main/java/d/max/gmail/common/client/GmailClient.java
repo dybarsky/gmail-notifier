@@ -5,66 +5,90 @@
  */
 package d.max.gmail.common.client;
 
-import d.max.gmail.common.account.Settings;
-import max.gmail.notify.settings.Settings;
-
-import javax.mail.*;
-import java.text.DateFormat;
-import java.util.Date;
+import d.max.gmail.common.account.Account;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.mail.*;
+import static d.max.gmail.common.utils.Object.*;
 
 public class GmailClient {
 
+    private Properties properties;
+    private Account account;
     private Store store;
-    private Folder folder;
+    private List<Folder> folders = new ArrayList<Folder>();
+    private List<Message> messages = new ArrayList<Message>();
 
-    private static Logger log = Logger.getLogger("Gmail.MailChecker");
-
-    public void connect() throws NoSuchProviderException, MessagingException {
-        log("load settings");
-        Settings settings = Settings.load();
-        log("load properties");
-        Properties props = System.getProperties();
-        props.setProperty("mail.store.protocol", "imaps");
-        props.setProperty("mail.imap.timeout", "30000");
-        props.setProperty("mail.imap.connectiontimeout", "30000");
-        log("get session");
-        Session session = Session.getDefaultInstance(props, null);
-        log("get store");
-        store = session.getStore("imaps");
-        log("connect");
-        store.connect("imap.gmail.com", settings.getUser(), settings.getPass());
-        log("get folder");
-        folder = store.getFolder(settings.getFolderName());
-        log("open folder");
-        folder.open(Folder.READ_ONLY);
+    public GmailClient(Account account, Properties properties) {
+        this.account = notNull(account);
+        this.properties = properties;
     }
-    public void disconnect() throws NoSuchProviderException, MessagingException {
-        log("close folder");
-        folder.close(false);
-        log("close connection");
-        store.close();
+    
+    public void connect() throws GmailException {
+        Session session = Session.getDefaultInstance(properties);
+        try {
+            store = session.getStore(ConnectionSettings.STORE);
+            store.connect(account.getEmail(), account.getPassword());
+            for (String folderName : account.getFolderNames()) {
+                Folder folder = store.getFolder(folderName);
+                folder.open(Folder.READ_ONLY);
+                folders.add(folder);
+            }
+        } catch (NoSuchProviderException e) {
+            throw new GmailException(e);
+        } catch (MessagingException e) {
+            throw new GmailException(e);
+        }
     }
-
-    public int getUnreadMessageCount() throws MessagingException {
-        if (folder == null)
-            return -1;
-        else
-            return folder.getUnreadMessageCount();
-    }
-
-    public String[] getSubject() throws MessagingException {
-        if (folder == null)
-            return null;
-        else {
-            String subj = folder.getMessage(folder.getMessageCount()).getSubject();
-            return subj.substring(subj.indexOf(":/ ") + 3).split(" ");
+    
+    public void disconnect() throws GmailException {
+        Exception ex = null;
+        for (Folder folder : folders) {
+            try {
+                folder.close(false);
+            } catch (MessagingException e) {
+                if (ex != null) {
+                    e.addSuppressed(ex);
+                    ex = e;
+                }
+            }
+        }
+        try {
+            store.close();
+        } catch (MessagingException e) {
+            if (ex != null) {
+                e.addSuppressed(ex);
+                ex = e;
+            }
+        }
+        if (ex != null) {
+            throw new GmailException(ex);
         }
     }
 
-    private static void log(String msg) {
-        log.log(Level.INFO, "<" + DateFormat.getDateTimeInstance().format(new Date()) + ">  " + msg);
+    public Iterator<Message> createMessagesIterator(boolean onlyLast) throws GmailException {
+        Exception ex = null;
+        for (Folder folder : folders) {
+            try {    
+                if (onlyLast) {
+                    messages.add(folder.getMessage(folder.getMessageCount()));
+                } else {
+                    for (int i = 0; i< folder.getUnreadMessageCount(); i++) {
+                        messages.add(folder.getMessage(folder.getMessageCount() - i));
+                    }
+                }
+            } catch (MessagingException e) {
+                if (ex != null) {
+                    e.addSuppressed(ex);
+                    ex = e;
+                }
+            }
+        }
+        if (ex != null && messages.isEmpty()) {
+            throw new GmailException(ex);
+        }
+        return messages.iterator();
     }
 }

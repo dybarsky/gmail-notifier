@@ -6,4 +6,8 @@ package d.max.gmail.common.client;
  * @time: 1:56:49 AM
  */
 public class GmailException extends Exception {
+
+    public GmailException(Throwable cause) {
+        super(cause);
+    }
 }

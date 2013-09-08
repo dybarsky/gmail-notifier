@@ -1,10 +1,14 @@
 package d.max.gmail.common.checker;
 
+import com.sun.xml.internal.bind.v2.model.core.PropertyInfo;
 import d.max.gmail.common.account.Account;
 import d.max.gmail.common.client.ConnectionSettings;
 import d.max.gmail.common.client.GmailClient;
 import d.max.gmail.common.client.GmailException;
 import java.lang.reflect.Array;
+import java.util.Iterator;
+import java.util.Properties;
+import javax.mail.Message;
 
 /**
  * @user: Maxim Dybarskiy | maxim.dybarskyy@gmail.com
@@ -13,25 +17,23 @@ import java.lang.reflect.Array;
  */
 public class CheckerFactory<R> {
 
-    public GmailClient createGmailClient(ConnectionSettings settings) {
-        
-        
-        return null;
+    public GmailClient createGmailClient(Properties properties, Account account) {
+        return new GmailClient(account, properties);
     }
     
     public Runnable createCheckRunnable(final CheckerListener<R> listener, final Account account) {
         return new Runnable() {
             public void run() {
                 try {
-                    GmailClient client = createGmailClient(createSettings());
+                    GmailClient client = createGmailClient(createSettings(), account);
                     MessageInterpreter<R> interpreter = createInterpreter();
                     
                     client.connect();
-                    
+                    Iterator<Message> iterator = client.createMessagesIterator(isOnlyLastMessage());
+                    R result = interpreter.process(iterator);
+                    listener.onSuccess(account, result);
                     client.disconnect();
                     
-                    R result = interpreter.process(null);
-                    listener.onSuccess(account, result);
                 } catch (GmailException e) {
                     listener.onFailed(account, e.getMessage());
                 }
@@ -43,7 +45,11 @@ public class CheckerFactory<R> {
         return new MessageInterpreter.SimpleInterpreter<Array>();
     }
     
-    public ConnectionSettings createSettings() {
-        return null;
+    public Properties createSettings() {
+        return ConnectionSettings.GmailBuilder.build();
+    }
+    
+    public boolean isOnlyLastMessage() {
+        return true;
     }
 }

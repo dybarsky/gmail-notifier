@@ -1,5 +1,6 @@
 package d.max.gmail.common.checker;
 
+import java.util.Iterator;
 import javax.mail.Message;
 
 /**
@@ -9,20 +10,20 @@ import javax.mail.Message;
  */
 public interface MessageInterpreter<R> {
 
-    R process(Message message);
+    R process(Iterator<Message> messages);
     
     
     
     public static class SimpleInterpreter<Array> implements MessageInterpreter {
 
-        public String[] process(Message message) {
+        public String[] process(Iterator<Message> messages) {
             return null;
         }
     }
     
     public static class BitbucketInterpreter<String> implements MessageInterpreter {
 
-        public String process(Message message) {
+        public String process(Iterator<Message> messages) {
             return null;
         }
     }
